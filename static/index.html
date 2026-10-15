@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAPITAL | Estructura y Flujo Financiero Personal</title>
+  <link rel="stylesheet" href="style.css?v=4">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Barra Superior / Header Institucional -->
+    <header class="navbar">
+      <div class="navbar-brand">
+        <div class="brand-mark">
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="34" height="34" rx="8" fill="url(#brandGrad)"/>
+            <path d="M10 24L24 10" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M12 10H24V22" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="10" cy="24" r="2.5" fill="#38bdf8"/>
+            <defs>
+              <linearGradient id="brandGrad" x1="0" y1="0" x2="34" y2="34" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#1e293b"/>
+                <stop offset="1" stop-color="#090d16"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <div class="brand-name">CAPITAL<span class="brand-accent">.</span></div>
+          <div class="brand-tagline">Estructura y Tesorería Personal</div>
+        </div>
+      </div>
+
+      <div class="navbar-controls">
+        <div class="currency-widget">
+          <label for="monedaSelect" class="widget-label">Divisa</label>
+          <div class="select-wrapper">
+            <select id="monedaSelect" aria-label="Seleccionar divisa">
+              <option value="€">EUR (€) Euro</option>
+              <option value="$">USD ($) Dólar</option>
+              <option value="£">GBP (£) Libra Esterlina</option>
+              <option value="MXN$">MXN ($) Peso Mexicano</option>
+              <option value="COP$">COP ($) Peso Colombiano</option>
+              <option value="ARS$">ARS ($) Peso Argentino</option>
+              <option value="CLP$">CLP ($) Peso Chileno</option>
+              <option value="S/">PEN (S/) Sol Peruano</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="nav-btn-group">
+          <button id="btnExportar" class="nav-btn" title="Descargar copia de seguridad en JSON">
+            <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Exportar</span>
+          </button>
+          
+          <button id="btnImportarTrigger" class="nav-btn" title="Restaurar copia de seguridad">
+            <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span>Importar</span>
+          </button>
+          <input type="file" id="fileImport" accept=".json" style="display:none;">
+
+          <button id="btnReiniciar" class="nav-btn nav-btn-subtle" title="Reiniciar datos de tesorería">
+            <svg class="btn-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <span>Reiniciar</span>
+          </button>
+        </div>
+
+        <div class="sync-indicator">
+          <span class="status-dot"></span>
+          <span id="saveStatus" class="status-label">En línea</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Resumen Ejecutivo (KPIs Financieros) -->
+    <section class="kpi-panel">
+      <!-- Total Ingresos -->
+      <div class="kpi-block kpi-inflow">
+        <div class="kpi-header">
+          <span class="kpi-badge">Entradas Brutas</span>
+          <svg class="kpi-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-primary-val" id="totalIngresoAnual">0,00 €</div>
+          <div class="kpi-meta">
+            <span class="kpi-period">Base anual</span>
+            <span class="kpi-sub-val" id="totalIngresoMensual">0,00 € / mes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Gastos -->
+      <div class="kpi-block kpi-outflow">
+        <div class="kpi-header">
+          <span class="kpi-badge">Cargas y Obligaciones</span>
+          <svg class="kpi-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-primary-val" id="totalGastoAnual">0,00 €</div>
+          <div class="kpi-meta">
+            <span class="kpi-period">Base anual</span>
+            <span class="kpi-sub-val" id="totalGastoMensual">0,00 € / mes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Balance Neto -->
+      <div class="kpi-block kpi-balance" id="balanceCard">
+        <div class="kpi-header">
+          <span class="kpi-badge" id="balanceBadge">Resultado Neto</span>
+          <svg id="balanceIcon" class="kpi-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><circle cx="16" cy="13" r="1.5"/></svg>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-primary-val" id="balanceNetoAnual">0,00 €</div>
+          <div class="kpi-meta">
+            <span class="kpi-period">Superávit anual</span>
+            <span class="kpi-sub-val" id="balanceNetoMensual">0,00 € / mes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tasa de Retención de Capital -->
+      <div class="kpi-block kpi-rate">
+        <div class="kpi-header">
+          <span class="kpi-badge">Ratio de Capitalización</span>
+          <svg class="kpi-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-primary-val rate-pct" id="tasaAhorroPorcentaje">0.0%</div>
+          <div class="kpi-health-note" id="tasaAhorroDiagnostico">
+            Registre ingresos y obligaciones para generar la auditoría de flujo.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Estructura Contable del Dinero (Distribución Presupuestaria) -->
+    <section class="budget-matrix-panel">
+      <div class="matrix-header">
+        <div class="matrix-title-group">
+          <h2 class="section-title">Distribución del Flujo de Caja</h2>
+          <p class="section-subtitle">Distribución porcentual de los recursos consolidados entre gastos estructurales, discrecionales y capitalización.</p>
+        </div>
+        <div class="matrix-legend">
+          <div class="legend-entry">
+            <span class="legend-swatch swatch-essential"></span>
+            <span class="legend-text">Estructural / Básico: <strong id="pctNecesidad">0.0%</strong></span>
+          </div>
+          <div class="legend-entry">
+            <span class="legend-swatch swatch-discretionary"></span>
+            <span class="legend-text">Discrecional / Ocio: <strong id="pctDeseo">0.0%</strong></span>
+          </div>
+          <div class="legend-entry">
+            <span class="legend-swatch swatch-reserve"></span>
+            <span class="legend-text">Fondo Disponible: <strong id="pctAhorro">0.0%</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="allocation-track" id="stackedBar">
+        <div class="track-segment seg-essential" id="barNecesidad" style="width: 0%;"></div>
+        <div class="track-segment seg-discretionary" id="barDeseo" style="width: 0%;"></div>
+        <div class="track-segment seg-reserve" id="barAhorro" style="width: 0%;"></div>
+      </div>
+
+      <div class="allocation-audit" id="structureAnalysis">
+        <!-- Generado dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Libros de Registro: Ingresos y Gastos -->
+    <main class="ledger-grid">
+      <!-- Columna 1: Libro de Ingresos -->
+      <section class="ledger-column">
+        <div class="column-topbar">
+          <div class="column-meta">
+            <span class="column-badge badge-inflow">Entradas</span>
+            <h3 class="column-heading">Ingresos Recurrentes</h3>
+          </div>
+          <button id="btnNuevoIngreso" class="action-btn action-btn-inflow">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>Añadir Ingreso</span>
+          </button>
+        </div>
+
+        <div class="ledger-table-header">
+          <span>CONCEPTO Y PERIODICIDAD</span>
+          <span style="text-align: right;">IMPACTO LIQUIDEZ</span>
+        </div>
+
+        <div class="ledger-entries" id="listaIngresos">
+          <!-- Insertado dinámicamente -->
+        </div>
+
+        <div class="ledger-footer">
+          <span class="footer-label">Subtotal Consolidado:</span>
+          <span class="footer-amount" id="colTotalIngresos">0,00 € / mes (0,00 € / año)</span>
+        </div>
+      </section>
+
+      <!-- Columna 2: Libro de Gastos -->
+      <section class="ledger-column">
+        <div class="column-topbar">
+          <div class="column-meta">
+            <span class="column-badge badge-outflow">Salidas</span>
+            <h3 class="column-heading">Gastos y Compromisos</h3>
+          </div>
+          <button id="btnNuevoGasto" class="action-btn action-btn-outflow">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>Añadir Gasto</span>
+          </button>
+        </div>
+
+        <div class="filter-toolbar">
+          <button class="filter-tab active" data-filter="todos">Todos los gastos</button>
+          <button class="filter-tab" data-filter="necesidad">Estructurales (Básicos)</button>
+          <button class="filter-tab" data-filter="deseo">Discrecionales (Ocio)</button>
+        </div>
+
+        <div class="ledger-table-header">
+          <span>CONCEPTO Y CATEGORÍA</span>
+          <span style="text-align: right;">COSTO ANUALIZADO</span>
+        </div>
+
+        <div class="ledger-entries" id="listaGastos">
+          <!-- Insertado dinámicamente -->
+        </div>
+
+        <div class="ledger-footer">
+          <span class="footer-label">Subtotal Consolidado:</span>
+          <span class="footer-amount" id="colTotalGastos">0,00 € / mes (0,00 € / año)</span>
+        </div>
+      </section>
+    </main>
+
+    <!-- Auditoría Analítica y Previsión de Tesorería -->
+    <section class="analytics-deck">
+      <div class="deck-card">
+        <div class="deck-header">
+          <h3 class="deck-title">Estructura de Gastos por Partida</h3>
+          <span class="deck-badge">Distribución</span>
+        </div>
+        <div class="categories-breakdown" id="desgloseCategorias">
+          <!-- Renderizado dinámicamente -->
+        </div>
+      </div>
+
+      <div class="deck-card">
+        <div class="deck-header">
+          <h3 class="deck-title">Previsión de Tesorería Acumulada</h3>
+          <span class="deck-badge">Horizonte Temporal</span>
+        </div>
+        <div class="horizon-grid">
+          <div class="horizon-node">
+            <span class="horizon-step">3 Meses</span>
+            <div class="horizon-figure" id="proj3m">0,00 €</div>
+          </div>
+          <div class="horizon-node">
+            <span class="horizon-step">6 Meses</span>
+            <div class="horizon-figure" id="proj6m">0,00 €</div>
+          </div>
+          <div class="horizon-node benchmark">
+            <span class="horizon-step">12 Meses (Anual)</span>
+            <div class="horizon-figure" id="proj1y">0,00 €</div>
+          </div>
+          <div class="horizon-node">
+            <span class="horizon-step">36 Meses (3 Años)</span>
+            <div class="horizon-figure" id="proj3y">0,00 €</div>
+          </div>
+        </div>
+
+        <div class="optimization-simulator">
+          <div class="simulator-controls">
+            <span class="sim-label">Simulador de optimización en gasto discrecional:</span>
+            <span class="sim-pill"><span id="labelRecorte">10</span>% de reducción</span>
+          </div>
+          <input type="range" id="sliderRecorte" min="0" max="40" step="5" value="10" aria-label="Porcentaje de optimización">
+          <div class="sim-feedback" id="simResult">
+            Registre compromisos discrecionales para proyectar la optimización del capital disponible.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pie de Aplicación -->
+    <footer class="app-footer">
+      <div class="footer-left">
+        <strong>CAPITAL</strong> &bull; Sistema local de análisis de tesorería y balances financieros
+      </div>
+      <div class="footer-right">
+        Datos persistidos localmente en <code>finanzas.json</code>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modal: Registrar/Editar Ingreso -->
+  <div class="modal-backdrop" id="modalIngreso">
+    <div class="modal-window">
+      <div class="window-header">
+        <div class="window-title-block">
+          <span class="window-kicker">Entrada Recurrente</span>
+          <h3 id="modalIngresoTitle">Registrar Ingreso</h3>
+        </div>
+        <button type="button" class="window-close-btn" onclick="cerrarModales()" aria-label="Cerrar">&times;</button>
+      </div>
+
+      <form id="formIngreso" onsubmit="guardarIngreso(event)">
+        <input type="hidden" id="ingresoId">
+
+        <div class="field-group">
+          <label for="ingresoConcepto" class="field-label">Concepto o Fuente de Ingreso</label>
+          <input type="text" id="ingresoConcepto" class="field-input" placeholder="Ej. Nómina ordinaria, Paga extraordinaria, Dividendos..." required>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="ingresoCategoria" class="field-label">Categoría Financiera</label>
+            <div class="select-field-wrap">
+              <select id="ingresoCategoria" class="field-select">
+                <option value="Nómina">Nómina y Salarios</option>
+                <option value="Extras">Bonificaciones y Pagas Extras</option>
+                <option value="Freelance / Negocio">Actividad Profesional / Facturación</option>
+                <option value="Inversiones">Rendimientos e Inversiones</option>
+                <option value="Alquileres">Rentas y Arrendamientos</option>
+                <option value="Otros">Otros Rendimientos</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="ingresoMonto" class="field-label">Importe por Cobro (<span class="currency-symbol">€</span>)</label>
+            <input type="number" step="0.01" min="0.01" id="ingresoMonto" class="field-input" placeholder="0.00" required>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="ingresoFrecuenciaPreset" class="field-label">Periodicidad (Cobros al año)</label>
+          <div class="select-field-wrap">
+            <select id="ingresoFrecuenciaPreset" class="field-select" onchange="actualizarFrecuenciaIngreso(this.value)">
+              <option value="12">12 veces al año &mdash; Mensual ordinario</option>
+              <option value="14">14 veces al año &mdash; Mensual con 2 Pagas Extras</option>
+              <option value="1">1 vez al año &mdash; Cobro único anual (Bonus/Liquidación)</option>
+              <option value="2">2 veces al año &mdash; Semestral</option>
+              <option value="4">4 veces al año &mdash; Trimestral</option>
+              <option value="26">26 veces al año &mdash; Quincenal</option>
+              <option value="52">52 veces al año &mdash; Semanal</option>
+              <option value="custom">Periodicidad personalizada...</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-group" id="groupIngresoCustomFreq" style="display: none;">
+          <label for="ingresoFrecuencia" class="field-label">Número exacto de cobros anuales</label>
+          <input type="number" step="1" min="1" max="365" id="ingresoFrecuencia" class="field-input" value="12">
+        </div>
+
+        <div class="field-group">
+          <label for="ingresoDescripcion" class="field-label">Anotación complementaria (opcional)</label>
+          <input type="text" id="ingresoDescripcion" class="field-input" placeholder="Ej. Retención estimada aplicada, abono día 28">
+        </div>
+
+        <!-- Previsualización Contable -->
+        <div class="preview-ledger-box preview-inflow">
+          <div class="preview-tag">Impacto Anualizado</div>
+          <div class="preview-row">
+            <div class="preview-metric">
+              <span class="preview-sub">Total Consolidado Anual</span>
+              <strong class="preview-val-inflow" id="previewIngresoAnual">+0,00 €</strong>
+            </div>
+            <div class="preview-divider"></div>
+            <div class="preview-metric">
+              <span class="preview-sub">Equivalente Mensual</span>
+              <strong class="preview-val-inflow" id="previewIngresoMensual">+0,00 €</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="window-footer">
+          <button type="button" class="btn-cancel" onclick="cerrarModales()">Cancelar</button>
+          <button type="submit" class="btn-submit-inflow">Guardar Registro</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Registrar/Editar Gasto -->
+  <div class="modal-backdrop" id="modalGasto">
+    <div class="modal-window">
+      <div class="window-header">
+        <div class="window-title-block">
+          <span class="window-kicker">Carga u Obligación</span>
+          <h3 id="modalGastoTitle">Registrar Gasto</h3>
+        </div>
+        <button type="button" class="window-close-btn" onclick="cerrarModales()" aria-label="Cerrar">&times;</button>
+      </div>
+
+      <form id="formGasto" onsubmit="guardarGasto(event)">
+        <input type="hidden" id="gastoId">
+
+        <div class="field-group">
+          <label for="gastoConcepto" class="field-label">Concepto del Gasto</label>
+          <input type="text" id="gastoConcepto" class="field-input" placeholder="Ej. Hipoteca, Seguro de vehículo, Suministro eléctrico..." required>
+        </div>
+
+        <!-- Selector de Naturaleza Presupuestaria -->
+        <div class="field-group">
+          <label class="field-label">Naturaleza Presupuestaria</label>
+          <div class="segment-picker">
+            <button type="button" class="segment-btn active necesidad" id="typeBtnNecesidad" onclick="seleccionarTipoGasto('necesidad')">
+              <div class="segment-header">
+                <span class="segment-dot dot-blue"></span>
+                <span class="segment-title">Gasto Estructural</span>
+              </div>
+              <span class="segment-desc">Obligación esencial fija (vivienda, suministros, alimentación)</span>
+            </button>
+            <button type="button" class="segment-btn deseo" id="typeBtnDeseo" onclick="seleccionarTipoGasto('deseo')">
+              <div class="segment-header">
+                <span class="segment-dot dot-amber"></span>
+                <span class="segment-title">Gasto Discrecional</span>
+              </div>
+              <span class="segment-desc">Estilo de vida, ocio, entretenimiento u optimizable</span>
+            </button>
+          </div>
+          <input type="hidden" id="gastoTipo" value="necesidad">
+        </div>
+
+        <div class="field-group">
+          <label for="gastoCategoria" class="field-label">Partida / Categoría</label>
+          <div class="select-field-wrap">
+            <select id="gastoCategoria" class="field-select">
+              <option value="Vivienda">Vivienda (Hipoteca / Alquiler / Comunidad)</option>
+              <option value="Alimentación">Alimentación y Compra Doméstica</option>
+              <option value="Suministros">Suministros Básicos (Luz, Agua, Gas, Fibra)</option>
+              <option value="Transporte">Transporte, Combustible y Movilidad</option>
+              <option value="Seguros e Impuestos">Pólizas, IBI, Tasas e Impuestos Anuales</option>
+              <option value="Salud y Cuidado">Salud, Medicina y Cuidado Personal</option>
+              <option value="Suscripciones">Suscripciones y Servicios Recurrentes</option>
+              <option value="Ocio">Restauración, Salidas y Ocio</option>
+              <option value="Educación">Formación y Desarrollo Profesional</option>
+              <option value="Otros">Partidas Generales / Varios</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label for="gastoMonto" class="field-label">Importe por Pago (<span class="currency-symbol">€</span>)</label>
+            <input type="number" step="0.01" min="0.01" id="gastoMonto" class="field-input" placeholder="0.00" required>
+          </div>
+
+          <div class="field-group">
+            <label for="gastoFrecuenciaPreset" class="field-label">Periodicidad Anual</label>
+            <div class="select-field-wrap">
+              <select id="gastoFrecuenciaPreset" class="field-select" onchange="actualizarFrecuenciaGasto(this.value)">
+                <option value="12">12 veces al año &mdash; Mensual</option>
+                <option value="1">1 vez al año &mdash; Póliza / Cargo Anual</option>
+                <option value="2">2 veces al año &mdash; Semestral</option>
+                <option value="4">4 veces al año &mdash; Trimestral</option>
+                <option value="26">26 veces al año &mdash; Quincenal</option>
+                <option value="52">52 veces al año &mdash; Semanal</option>
+                <option value="custom">Periodicidad personalizada...</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group" id="groupGastoCustomFreq" style="display: none;">
+          <label for="gastoFrecuencia" class="field-label">Número exacto de pagos anuales</label>
+          <input type="number" step="1" min="1" max="365" id="gastoFrecuencia" class="field-input" value="12">
+        </div>
+
+        <div class="field-group">
+          <label for="gastoDescripcion" class="field-label">Detalle o vencimiento (opcional)</label>
+          <input type="text" id="gastoDescripcion" class="field-input" placeholder="Ej. Póliza vence en el segundo trimestre">
+        </div>
+
+        <!-- Previsualización Contable -->
+        <div class="preview-ledger-box preview-outflow">
+          <div class="preview-tag">Carga Consolidada</div>
+          <div class="preview-row">
+            <div class="preview-metric">
+              <span class="preview-sub">Costo Anualizado</span>
+              <strong class="preview-val-outflow" id="previewGastoAnual">-0,00 €</strong>
+            </div>
+            <div class="preview-divider"></div>
+            <div class="preview-metric">
+              <span class="preview-sub">Reserva Mensual Necesaria</span>
+              <strong class="preview-val-outflow" id="previewGastoMensual">-0,00 €</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="window-footer">
+          <button type="button" class="btn-cancel" onclick="cerrarModales()">Cancelar</button>
+          <button type="submit" class="btn-submit-outflow">Registrar Compromiso</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js?v=4"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+{
+  "moneda": "€",
+  "meta_ahorro_porcentaje": 20,
+  "ingresos": [
+    {
+      "id": "ing_1792086381206",
+      "concepto": "RGIS",
+      "categoria": "Nómina",
+      "monto": 726,
+      "frecuencia": 10,
+      "descripcion": ""
+    },
+    {
+      "id": "ing_1792086433069",
+      "concepto": "Eventos",
+      "categoria": "Nómina",
+      "monto": 300,
+      "frecuencia": 10,
+      "descripcion": ""
+    },
+    {
+      "id": "ing_1792086844143",
+      "concepto": "Paga abuelos",
+      "categoria": "Otros",
+      "monto": 70,
+      "frecuencia": 12,
+      "descripcion": ""
+    }
+  ],
+  "gastos": [
+    {
+      "id": "gas_1792086526458",
+      "concepto": "Vacaciones",
+      "categoria": "Ocio",
+      "tipo": "deseo",
+      "monto": 500,
+      "frecuencia": 1,
+      "descripcion": "Vacaciones con los chavales"
+    },
+    {
+      "id": "gas_1792086635621",
+      "concepto": "movil",
+      "categoria": "Otros",
+      "tipo": "necesidad",
+      "monto": 400,
+      "frecuencia": 1,
+      "descripcion": ""
+    },
+    {
+      "id": "gas_1792086683800",
+      "concepto": "Operar vista",
+      "categoria": "Salud y Cuidado",
+      "tipo": "necesidad",
+      "monto": 2000,
+      "frecuencia": 1,
+      "descripcion": ""
+    },
+    {
+      "id": "gas_1792086864712",
+      "concepto": "Peña",
+      "categoria": "Otros",
+      "tipo": "deseo",
+      "monto": 100,
+      "frecuencia": 1,
+      "descripcion": ""
+    },
+    {
+      "id": "gas_1792086883663",
+      "concepto": "Spotify",
+      "categoria": "Suscripciones",
+      "tipo": "deseo",
+      "monto": 6.5,
+      "frecuencia": 12,
+      "descripcion": ""
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Temporales de persistencia local
+data/*.tmp
+*.tmp
+*.log
+
+# Entornos del sistema
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+

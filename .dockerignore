@@ -1,0 +1,12 @@
+.git
+.gitignore
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.tmp
+*.log
+.DS_Store
+README.md
+instalar_acceso_directo.sh
+
